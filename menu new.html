@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Menu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .menu-item {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .menu-item h3 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+        .menu-item p {
+            margin: 5px 0;
+            color: #555;
+        }
+        .menu-item label {
+            display: block;
+            margin-top: 10px;
+        }
+        .menu-item input[type="number"] {
+            width: 60px;
+            padding: 5px;
+            margin-left: 10px;
+        }
+        .order-form {
+            margin-top: 20px;
+        }
+        .order-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .order-form select, .order-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .order-form button {
+            background-color: #28a745;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .order-form button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Restaurant Menu</h1>
+    </header>
+
+    <div class="container">
+        <!-- Menu Section -->
+        <div class="menu">
+            <h2>Menu</h2>
+            <div class="menu-item">
+                <h3>Burger</h3>
+                <p>A delicious beef burger with lettuce, tomato, and cheese.</p>
+                <p><strong>Price: $10</strong></p>
+                <label>
+                    Quantity: <input type="number" name="Burger" min="0" value="0">
+                </label>
+            </div>
+            <div class="menu-item">
+                <h3>Pizza</h3>
+                <p>Classic margherita pizza with fresh mozzarella and basil.</p>
+                <p><strong>Price: $12</strong></p>
+                <label>
+                    Quantity: <input type="number" name="Pizza" min="0" value="0">
+                </label>
+            </div>
+            <div class="menu-item">
+                <h3>Pasta</h3>
+                <p>Spaghetti with marinara sauce and a sprinkle of parmesan.</p>
+                <p><strong>Price: $8</strong></p>
+                <label>
+                    Quantity: <input type="number" name="Pasta" min="0" value="0">
+                </label>
+            </div>
+            <div class="menu-item">
+                <h3>Garlic Bread</h3>
+                <p>Toasted bread with garlic butter.</p>
+                <p><strong>Price: $5</strong></p>
+                <label>
+                    Quantity: <input type="number" name="Garlic Bread" min="0" value="0">
+                </label>
+            </div>
+            <div class="menu-item">
+                <h3>Grilled Salmon</h3>
+                <p>Fresh salmon grilled to perfection.</p>
+                <p><strong>Price: $18</strong></p>
+                <label>
+                    Quantity: <input type="number" name="Grilled Salmon" min="0" value="0">
+                </label>
+            </div>
+        </div>
+
+        <!-- Order Form -->
+        <div class="order-form">
+            <h2>Place Your Order</h2>
+            <form id="orderForm">
+                <label for="tableNumber">Table Number:</label>
+                <select id="tableNumber" name="tableNumber" required>
+                    <option value="1">Table 1</option>
+                    <option value="2">Table 2</option>
+                    <option value="3">Table 3</option>
+                    <option value="4">Table 4</option>
+                    <option value="5">Table 5</option>
+                </select>
+
+                <label for="specialInstructions">Special Instructions:</label>
+                <textarea id="specialInstructions" name="specialInstructions" rows="3" placeholder="e.g., No onions, extra cheese"></textarea>
+
+                <button type="submit">Submit Order</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('orderForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Get table number
+            const tableNumber = document.getElementById('tableNumber').value;
+
+            // Get special instructions
+            const specialInstructions = document.getElementById('specialInstructions').value;
+
+            // Get selected items and quantities
+            let orderItems = [];
+            document.querySelectorAll('.menu-item input[type="number"]').forEach(input => {
+                const quantity = parseInt(input.value);
+                if (quantity > 0) {
+                    orderItems.push(`${input.name} x ${quantity}`);
+                }
+            });
+
+            // Prepare the message
+            let message = `New Order for Table ${tableNumber}:\n`;
+            message += `Items: ${orderItems.join(', ') || 'No items selected'}\n`;
+            message += `Special Instructions: ${specialInstructions || 'None'}`;
+
+            // Encode the message for WhatsApp
+            const encodedMessage = encodeURIComponent(message);
+
+            // Replace with your WhatsApp number (include country code, e.g., +91 for India)
+            const whatsappNumber = '+917483021362';
+
+            // Open WhatsApp with the order details
+            window.open(`https://wa.me/${+917483021362}?text=${encodedMessage}`, '_blank');
+
+            // Clear the form
+            document.getElementById('orderForm').reset();
+            document.querySelectorAll('.menu-item input[type="number"]').forEach(input => {
+                input.value = 0;
+            });
+        });
+    </script>
+</body>
+</html>
